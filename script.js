@@ -141,39 +141,41 @@ let ws = null;
 
 // Функция подключения к серверу
 function connectToServer() {
-  try {
-    // Замените URL на ваш сервер на Render
-    ws = new WebSocket('wss://clonerg-server.onrender.com'); // например: wss://rgg-server.onrender.com
+  setTimeout(() => {
+    try {
+      ws = new WebSocket('wss://clonerg-server.onrender.com');
 
-    ws.onopen = () => {
-      console.log('Соединение с сервером установлено');
-      ws.send(JSON.stringify({
-        type: 'join',
-        roomId: 'room1',
-        playerName: 'Player1'
-      }));
-    };
+      ws.onopen = () => {
+        console.log('Соединение с сервером установлено');
+        ws.send(JSON.stringify({
+          type: 'join',
+          roomId: 'room1',
+          playerName: 'Player1'
+        }));
+      };
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
 
-      if (data.type === 'players') {
-        updateOtherPlayers(data.players);
-      }
-    };
+        if (data.type === 'players') {
+          updateOtherPlayers(data.players);
+        }
+      };
 
-    ws.onclose = () => {
-      console.log('Соединение с сервером закрыто');
-    };
+      ws.onclose = () => {
+        console.log('Соединение с сервером закрыто');
+      };
 
-    ws.onerror = (error) => {
-      console.error('Ошибка WebSocket:', error);
-    };
-  } catch (e) {
-    console.warn('Не удалось подключиться к серверу. Работаем в автономном режиме.');
-  }
+      ws.onerror = (error) => {
+        console.error('Ошибка WebSocket:', error);
+      };
+    } catch (e) {
+      console.warn('Не удалось подключиться к серверу. Работаем в автономном режиме.');
+    }
+  }, 0);
 }
 
+connectToServer();
 // Функция отправки позиции на сервер
 function sendPositionToServer(position) {
   if (ws && ws.readyState === WebSocket.OPEN) {
