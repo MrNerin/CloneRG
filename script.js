@@ -64,12 +64,7 @@ function updatePlayerPosition() {
     player.style.top = `${rect.top - containerRect.top}px`;
 
     // Отправляем позицию на сервер
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({
-        type: 'move',
-        position: progress.position
-      }));
-    }
+    sendPositionToServer(progress.position);
   }
 }
 
@@ -142,26 +137,61 @@ function updateFriendsList() {
 updateFriendsList();
 
 // WebSocket
-const ws = new WebSocket('wss://clonerg-server.onrender.com');
+let ws = null;
 
-ws.onopen = () => {
-  console.log('Соединение с сервером установлено');
-  // Пример: присоединяемся к комнате
-  ws.send(JSON.stringify({
-    type: 'join',
-    roomId: 'room1',
-    playerName: 'Player1'
-  }));
-};
+// Функция подключения к серверу
+function connectToServer() {
+  try {
+    // Замените URL на ваш сервер на Render
+    ws = new WebSocket('wss://clonerg-server.onrender.com');
 
-ws.onmessage = (event) => {
-  const data = JSON.parse(event.data);
+    ws.onopen = () => {
+      console.log('Соединение с сервером установлено');
+      ws.send(JSON.stringify({
+        type: 'join',
+        roomId: 'room1',
+        playerName: 'Player1'
+      }));
+    };
 
-  if (data.type === 'players') {
-    // Обновляем позиции других игроков
-    updateOtherPlayers(data.players);
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'players') {
+        updateOtherPlayers(data.players);
+      }
+    };
+
+    ws.onclose = () => {
+      console.log('Соединение с сервером закрыто');
+    };
+
+    ws.onerror = (error) => {
+      console.error('Ошибка WebSocket:', error);
+    };
+  } catch (e) {
+    console.warn('Не удалось подключиться к серверу. Работаем в автономном режиме.');
   }
-};
+}
+
+// Функция отправки позиции на сервер
+function sendPositionToServer(position) {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({
+      type: 'move',
+      position: position
+    }));
+  }
+}
+
+// Проверяем, доступен ли сервер (простая проверка)
+fetch('https://<имя-сервиса>.onrender.com', { method: 'HEAD' }) // используйте тот же URL, что и выше
+  .then(() => {
+    connectToServer(); // Подключаемся, если сервер жив
+  })
+  .catch(() => {
+    console.warn('Сервер недоступен. Работаем в автономном режиме.');
+  });
 
 // Функция обновления других игроков
 function updateOtherPlayers(players) {
