@@ -142,7 +142,7 @@ function updateFriendsList() {
 updateFriendsList();
 
 // WebSocket
-const ws = new WebSocket('ws://localhost:8080');
+const ws = new WebSocket('wss://clonerg-server.onrender.com');
 
 ws.onopen = () => {
   console.log('Соединение с сервером установлено');
