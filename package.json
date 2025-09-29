@@ -1,0 +1,24 @@
+{
+  "name": "clone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "map-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrNerin/CloneRG.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrNerin/CloneRG/issues"
+  },
+  "homepage": "https://github.com/MrNerin/CloneRG#readme",
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}
