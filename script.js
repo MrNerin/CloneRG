@@ -143,7 +143,7 @@ let ws = null;
 function connectToServer() {
   try {
     // Замените URL на ваш сервер на Render
-    ws = new WebSocket('wss://clonerg-server.onrender.com');
+    ws = new WebSocket('wss://clonerg-server.onrender.com'); // например: wss://rgg-server.onrender.com
 
     ws.onopen = () => {
       console.log('Соединение с сервером установлено');
@@ -184,7 +184,7 @@ function sendPositionToServer(position) {
   }
 }
 
-// Проверяем, доступен ли сервер (простая проверка)
+// Просто подключаемся к серверу (если нужно)
 connectToServer();
 
 // Функция обновления других игроков
