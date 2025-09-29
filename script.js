@@ -185,7 +185,7 @@ function sendPositionToServer(position) {
 }
 
 // Проверяем, доступен ли сервер (простая проверка)
-fetch('https://<имя-сервиса>.onrender.com', { method: 'HEAD' }) // используйте тот же URL, что и выше
+fetch('https://clonerg-server.onrender.com', { method: 'HEAD' }) // используйте тот же URL, что и выше
   .then(() => {
     connectToServer(); // Подключаемся, если сервер жив
   })
