@@ -185,13 +185,7 @@ function sendPositionToServer(position) {
 }
 
 // Проверяем, доступен ли сервер (простая проверка)
-fetch('https://clonerg-server.onrender.com', { method: 'HEAD' }) // используйте тот же URL, что и выше
-  .then(() => {
-    connectToServer(); // Подключаемся, если сервер жив
-  })
-  .catch(() => {
-    console.warn('Сервер недоступен. Работаем в автономном режиме.');
-  });
+connectToServer();
 
 // Функция обновления других игроков
 function updateOtherPlayers(players) {
